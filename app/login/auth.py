@@ -4,7 +4,7 @@ from functools import wraps
 from flask import request, redirect, abort
 from flask_login import login_required, login_user, logout_user
 from app import app, login_manager
-from ..models import User, ApiKey
+from ..models import OAuthUser, ApiKeyUser, ApiKey
 from .. import amivapi
 
 
@@ -45,8 +45,8 @@ def load_user_from_request(request):
         access_token = request.args.get('access_token')
         try:
             response = amivapi.get('/sessions/{}'.format(access_token), token=access_token)
-            data = response.json()
-            user = User(id=data['_id'], token=access_token)
+            session = response.json()
+            user = OAuthUser(session)
             login_user(user)
             return user
         except:
@@ -55,7 +55,7 @@ def load_user_from_request(request):
         authorization = request.headers.get('Authorization')
         try:
             apikey = ApiKey.query(token=authorization).one()
-            user = User(id=apikey._id, token=apikey.token)
+            user = ApiKeyUser(apikey)
             return user
         except:
             return None
