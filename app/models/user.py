@@ -11,7 +11,7 @@ class OAuthUser(UserMixin):
 
     """
     def __init__(self, session):
-        self.id = session.user
+        self.id = session['user']
         self.session = session
 
     def is_active(self):
@@ -20,7 +20,7 @@ class OAuthUser(UserMixin):
 
     def get_id(self):
         """Return the user token to satisfy Flask-Login's requirements."""
-        return self.session.token
+        return self.session['token']
 
 
 class ApiKeyUser(UserMixin):

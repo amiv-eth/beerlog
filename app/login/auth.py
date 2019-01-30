@@ -12,7 +12,10 @@ def apikey_required(f):
     """
     Requires to have a valid API key set in the Authorization header.
 
-    Shows an error 403 page if unauthorized.
+    This is a wrapper for the @login_required decorator.
+
+    Error 401: shown when the Authorization header is missing.
+    Error 403: shown when the provided Authorization header is invalid.
     """
     @wraps(f)
     def wrapped(*args, **kwargs):
@@ -29,7 +32,9 @@ def oauth_required(f):
     """
     Requires that the user is logged in with OAuth.
 
-    Shows an error 403 page if one tries to access with an api key.
+    This is a wrapper for the @login_required decorator.
+
+    Error 403: shwon if trying to access with an api key (Authorization header).
     """
     @wraps(f)
     def wrapped(*args, **kwargs):
@@ -54,7 +59,7 @@ def load_user_from_request(request):
     elif 'Authorization' in request.headers:
         authorization = request.headers.get('Authorization')
         try:
-            apikey = ApiKey.query(token=authorization).one()
+            apikey = ApiKey.query.filter_by(token=authorization).one()
             user = ApiKeyUser(apikey)
             return user
         except:
@@ -66,9 +71,8 @@ def load_user_from_request(request):
 def load_user_from_session(session_token):
     try:
         response = amivapi.get('/sessions/{}'.format(session_token), token=session_token)
-        data = response.json()
-        user = User(data['_id'], session_token)
-        app.logger.info(user)
+        session = response.json()
+        user = OAuthUser(session)
         return user
     except:
         return None

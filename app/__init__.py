@@ -24,7 +24,7 @@ db.init_app(app)
 # add login functionality from flask-login
 login_manager.init_app(app)
 login_manager.login_message = "You must be logged in to access this page."
-login_manager.login_view = "login.login"
+login_manager.login_view = "beerlog.home"
 
 # add database migration from flask-migrate
 Migrate(app, db)
