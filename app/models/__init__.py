@@ -1,5 +1,5 @@
 # app/models/__init__.py
 
-from .user import OAuthUser, ApiKeyUser
+from .user import User
 from .apikey import ApiKey, ApiKeyPermission
-from .beverage import Beverage
+from .product_report import ProductReport

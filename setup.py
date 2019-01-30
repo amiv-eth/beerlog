@@ -5,7 +5,7 @@ Adds an api key to the database
 import argparse
 from app import app, db
 from app.models import ApiKey, ApiKeyPermission
-from app.models.enums import BeverageTypeEnum
+from app.models.enums import ProductEnum
 
 # Parse arguments
 parser = argparse.ArgumentParser()
@@ -18,15 +18,14 @@ print('Creating API Key...')
 with app.app_context():
     apikey = ApiKey()
     apikey.name = args.name
-    for param in args.permission:
-        print('permission: {}'.format(param))
+    for productLabel in args.permission:
+        print('permission: {}'.format(productLabel))
         permission = ApiKeyPermission()
-        if param == 'beer':
-            permission.beverage_type = BeverageTypeEnum.BEER
-        elif param == 'coffee':
-            permission.beverage_type = BeverageTypeEnum.COFFEE
-        else:
+        product = ProductEnum.from_str(productLabel)
+
+        if product == None:
             continue
+        permission.product = product
         apikey.permissions.append(permission)
         db.session.add(permission)
     token = apikey.token

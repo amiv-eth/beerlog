@@ -4,16 +4,37 @@ from enum import Enum
 
 
 class BaseEnum(Enum):
+    def __str__(self):
+        return str(self.value)
+
     def __repr__(self):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-class BeverageTypeEnum(BaseEnum):
+class ProductEnum(BaseEnum):
     BEER = 'beer'
     COFFEE = 'coffee'
+
+    @staticmethod
+    def from_str(label):
+        if label == 'beer':
+            return ProductEnum.BEER
+        if label == 'coffee':
+            return ProductEnum.COFFEE
+        return None
 
 
 class OrganisationEnum(BaseEnum):
     AMIV = 'amiv'
     VIS = 'vis'
     VMP = 'vmp'
+
+    @staticmethod
+    def from_str(label):
+        if label == 'amiv':
+            return OrganisationEnum.AMIV
+        if label == 'vis':
+            return OrganisationEnum.VIS
+        if label == 'vmp':
+            return OrganisationEnum.VMP
+        return None

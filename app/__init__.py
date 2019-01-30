@@ -42,3 +42,5 @@ from .error import error_bp
 app.register_blueprint(error_bp)
 from .beerlog import beerlog_bp
 app.register_blueprint(beerlog_bp)
+from .api import api_bp
+app.register_blueprint(api_bp, url_prefix='/api')

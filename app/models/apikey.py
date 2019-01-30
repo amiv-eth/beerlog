@@ -2,7 +2,7 @@
 
 import secrets
 from app import db
-from .enums import BeverageTypeEnum, OrganisationEnum
+from .enums import ProductEnum, OrganisationEnum
 
 
 class ApiKey(db.Model):
@@ -32,6 +32,7 @@ class ApiKeyPermission(db.Model):
     __tablename__ = 'apikey_permissions'
 
     _id = db.Column(db.Integer, primary_key=True)
-    apikey_id = db.Column(db.Integer, db.ForeignKey('{}._id'.format(ApiKey.__tablename__)))
-    apikey = db.relationship('ApiKey', backref = ApiKey.__tablename__)
-    beverage_type = db.Column(db.Enum(BeverageTypeEnum), nullable=False)
+    apikey_id = db.Column(
+        db.Integer, db.ForeignKey('{}._id'.format(ApiKey.__tablename__), ondelete='CASCADE'), nullable=False
+    )
+    product = db.Column(db.Enum(ProductEnum), nullable=False)
