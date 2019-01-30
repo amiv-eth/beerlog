@@ -1,0 +1,16 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block body %}
+<div class="content-section">
+  <br/>
+  {{ utils.flashed_messages() }}
+  <br/>
+  <div class="center-narrow">
+    <h1>AMIV Beerlog</h1>
+    <br/>
+    <p>You have successfully been logged out.</p>
+    <a class="btn btn-default" role="button" href="{{ url_for('beerlog.home') }}">Login</a>
+  </div>
+</div>
+{% endblock %}

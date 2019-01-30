@@ -1,0 +1,35 @@
+<!-- app/templates/base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title }} | Beerlog | AMIV an der ETH</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.3.3.7.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/jquery.3.2.1.min.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+</head>
+<body>
+    {% block javascript %}
+    {% endblock %}
+    <div class="wrapper">
+      {% block body %}
+      {% endblock %}
+        <br/>
+      <div class="push"></div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li><a target="_blank" href="https://amiv.ethz.ch"><img src="{{ url_for('static', filename='img/amiv_logo_300dpi-copperred.png') }}" style="width: 150px;"></a></li>
+                        <li><a href="mailto:it@amiv.ethz.ch">Contact</a></li>
+                        <li><a target="_blank" href="https://gitlab.ethz.ch/amiv/beerlog">Source Code & Issue Tracker</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

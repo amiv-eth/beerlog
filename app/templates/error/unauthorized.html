@@ -1,0 +1,15 @@
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block body %}
+<div class="content-section">
+  <br/>
+  {{ utils.flashed_messages() }}
+  <br/>
+  <div class="center-narrow">
+    <h1>AMIV Beerlog</h1>
+    <br/>
+    <p>You are not authorized to access this page.</p>
+  </div>
+</div>
+{% endblock %}

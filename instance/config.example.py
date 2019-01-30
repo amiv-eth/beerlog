@@ -1,0 +1,14 @@
+# Example Configuration File
+
+AMIV_API_URL = 'https://api-dev.amiv.ethz.ch'
+AMIV_API_KEY = 'replace me'
+
+OAUTH_CLIENT_ID = 'Local Tool'
+OAUTH_OWN_URL = 'http://localhost:5000'
+
+DEBUG = False 
+TESTING = False
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://<username>:<password>@<host>/<db-name>'
+SECRET_KEY = 'replace me (24 random bytes)'
