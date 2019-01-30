@@ -1,8 +1,7 @@
+# app/login/__init__.py
 
 import secrets
 from flask import Blueprint
-
-from . import auth
 
 login_bp = Blueprint('login', __name__)
 

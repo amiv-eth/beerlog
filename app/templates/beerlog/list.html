@@ -1,5 +1,4 @@
 {% import "bootstrap/utils.html" as utils %}
-{% import "bootstrap/wtf.html" as wtf %}
 {% extends "base.html" %}
 {% block body %}
 <div class="center">
@@ -28,11 +27,9 @@
     <br/>
     {{ utils.flashed_messages() }}
     <br/>
-    <div class="center-narrow">
-      <h1>AMIV Beerlog Overview</h1>
-      <br/>
-      <p>Here comes the list!</p>
-    </div>
+    <h1>AMIV Beerlog Overview</h1>
+    <br/>
+    <p>Here comes the list!</p>
   </div>
 </div>
 {% endblock %}

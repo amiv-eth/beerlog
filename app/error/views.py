@@ -1,11 +1,20 @@
 # app/error/views.py
 
-from flask import flash, redirect, render_template, url_for, request, abort, make_response, current_app as app
-from flask_login import login_required, login_user, logout_user, current_user
+from flask import render_template
 
-from . import error_bp
 from .. import app
+
+
+@app.errorhandler(401)
+def page_unauthorized(e):
+    return render_template('error/401.html', title='Unauthorized'), 401
+
 
 @app.errorhandler(403)
 def page_forbidden(e):
-    return render_template('error/unauthorized.html', title='Unauthorized'), 403
+    return render_template('error/403.html', title='Forbidden'), 403
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error/404.html', title='Page not found'), 404

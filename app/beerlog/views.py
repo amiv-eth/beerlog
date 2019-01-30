@@ -1,13 +1,14 @@
-# app/login/views.py
+# app/beerlog/views.py
 
 from flask import render_template, make_response
-from flask_login import login_required
+
+from ..login import auth
 
 from . import beerlog_bp
 
 
 @beerlog_bp.route('/')
-@login_required
+@auth.oauth_required
 def home():
     """
     Handle requests to the / route

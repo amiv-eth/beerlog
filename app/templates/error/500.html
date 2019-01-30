@@ -1,0 +1,18 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block body %}
+<div class="content-section">
+  <br/>
+  {{ utils.flashed_messages() }}
+  <br/>
+  <div class="center-narrow">
+    <h1>Oops, that's an error!</h1>
+    <br/>
+    <p>
+      Error 500: Something went horribly wrong.
+      <br/><br/>
+      If this happens muliple times, please report an issue on the <a href="https://gitlab.ethz.ch/amiv/beerlog/issues">issue tracker</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -3,9 +3,7 @@
 from flask import flash, redirect, render_template, url_for, request, abort, make_response
 from flask_login import login_required, login_user, logout_user, current_user
 
-from . import login_bp, auth
-from .forms import CredentialsLoginForm
-from .. import db
+from . import login_bp
 
 @login_bp.route('/logout')
 def logout():

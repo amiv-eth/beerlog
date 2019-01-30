@@ -1,3 +1,4 @@
+# app/beerlog/__init__.py
 
 import secrets
 from flask import Blueprint
