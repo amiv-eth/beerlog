@@ -10,9 +10,6 @@ from .models.enums import ProductEnum, OrganisationEnum
 
 def get_product_amounts(user, organisation):
     """Collects consumption statistics and calculates remaining free drinks."""
-    # now = datetime.now()
-    # midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
-
     max_available = get_max_available_free_products(user, organisation)
     consumed = get_consumed_products_today(user, organisation)
     available = {}
