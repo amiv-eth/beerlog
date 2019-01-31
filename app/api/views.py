@@ -73,8 +73,9 @@ def report():
         abort(403, 'You don\'t have the permission to create the desired resource.')
 
     apiuser = amivapi.get_user_by_rfid(data.get('rfid'))
-    user = apiuser['_id']
-    if not user:
+    if apiuser:
+        user = apiuser['_id']
+    else:
         user = data.get('rfid')
 
     report = ProductReport()
@@ -155,7 +156,7 @@ def page_not_found(e):
             'code': 404,
             'message': e.description,
         }
-    }), 403
+    }), 404
 
 
 @api_bp.errorhandler(422)
@@ -167,7 +168,7 @@ def page_unprocessable(e):
             'code': 422,
             'message': 'Insertion failure: document contains error(s)',
         }
-    }), 401
+    }), 422
 
 
 @api_bp.errorhandler(500)
