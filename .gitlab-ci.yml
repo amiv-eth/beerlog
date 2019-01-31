@@ -16,8 +16,8 @@ build:
   except:
     - master
 
-build_dev:
-  stage: build_dev
+build_push_dev:
+  stage: build_push_dev
   image: docker:latest
   services:
     - docker:dind
@@ -38,8 +38,8 @@ deploy_dev:
   only:
     - master
 
-build_prod:
-  stage: build_prod
+build_push_prod:
+  stage: build_push_prod
   image: docker:latest
   services:
     - docker:dind
