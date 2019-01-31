@@ -79,34 +79,8 @@ deploy_dev:
   only:
     - master
 
-build_push_dev:
-  stage: build_push
-  image: docker:latest
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:dev" ./
-    - docker push "$CI_REGISTRY_IMAGE"
-    - docker images
-  environment:
-    name: development
-    url: https://beerlog-dev.amiv.ethz.ch
-  only:
-    - master
-
-deploy_dev:
-  stage: deploy
-  image: amiveth/service-update-helper
-  script:
-    - export CI_DEPLOY_SERVICE="$CI_DEPLOY_SERVICE_DEV"
-    - /update.py
-  only:
-    - master
-
 build_push_prod:
-  stage: build_push
+  stage: build
   image: docker:latest
   services:
     - docker:dind
