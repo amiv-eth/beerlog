@@ -1,20 +1,8 @@
 stages:
-  - build
   - build_push_dev
   - deploy_dev
   - build_push_prod
   - deploy_prod
-
-# On branches except master: verify that build works, do not push to registry
-build:
-  stage: build
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - docker build --pull ./
-  except:
-    - master
 
 build_push_dev:
   stage: build_push_dev
@@ -26,7 +14,12 @@ build_push_dev:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:dev" ./
     - docker push "$CI_REGISTRY_IMAGE"
+  environment:
+    name: development
+    url: https://beerlog-dev.amiv.ethz.ch
   only:
+    - branches
+  except:
     - master
 
 deploy_dev:
@@ -35,7 +28,7 @@ deploy_dev:
   script:
     - export CI_DEPLOY_SERVICE="$CI_DEPLOY_SERVICE_DEV"
     - /update.py
-  only:
+  except:
     - master
 
 build_push_prod:
@@ -48,7 +41,9 @@ build_push_prod:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:latest" ./
     - docker push "$CI_REGISTRY_IMAGE:latest"
-  when: manual
+  environment:
+    name: production
+    url: https://beerlog.amiv.ethz.ch
   only:
     - master
 
