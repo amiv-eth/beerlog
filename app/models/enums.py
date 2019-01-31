@@ -23,6 +23,13 @@ class ProductEnum(BaseEnum):
             return ProductEnum.COFFEE
         return None
 
+    @classmethod
+    def choices(cls):
+        return [(choice, choice.value) for choice in cls]
+
+    @classmethod
+    def coerce(cls, item):
+        return item if (item == None or type(item) == ProductEnum) else ProductEnum[item]
 
 class OrganisationEnum(BaseEnum):
     AMIV = 'amiv'
@@ -38,3 +45,11 @@ class OrganisationEnum(BaseEnum):
         if label == 'vmp':
             return OrganisationEnum.VMP
         return None
+
+    @classmethod
+    def choices(cls):
+        return [(choice, choice.value) for choice in cls]
+
+    @classmethod
+    def coerce(cls, item):
+        return item if (item == None or type(item) == OrganisationEnum) else OrganisationEnum[item]

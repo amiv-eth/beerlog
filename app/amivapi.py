@@ -21,6 +21,13 @@ def delete(path, data, token=None, **kwargs):
         token = app.config.get('AMIV_API_KEY')
     return requests.delete(app.config.get('AMIV_API_URL') + path, **kwargs, data=data, auth=requests.auth.HTTPBasicAuth(token, ''))
 
+def get_users_by_ids(ids, token=None):
+    query = json.dumps({ "_id": { "$in": ids } })
+    response = get('/users?where=' + query, token)
+    data = response.json()
+    if response.status_code == 200:
+        return data['_items']
+    return []
 
 def get_user_by_rfid(rfid, token=None):
     if (rfid is not None):
