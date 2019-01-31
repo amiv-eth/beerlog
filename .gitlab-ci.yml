@@ -1,7 +1,5 @@
 stages:
   - build
-  - build_push
-  - debug
   - deploy
 
 build:
@@ -16,8 +14,8 @@ build:
   except:
     - master
 
-build_push_review:
-  stage: build_push
+build_review:
+  stage: build
   image: docker:latest
   services:
     - docker:dind
@@ -48,7 +46,7 @@ deploy_review:
     - master
 
 build_dev:
-  stage: build_push
+  stage: build
   image: docker:latest
   services:
     - docker:dind
@@ -56,24 +54,25 @@ build_dev:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:dev" ./
-    - docker images
+    - mkdir -p /$CI_REGISTRY_IMAGE
+    - docker save "$CI_REGISTRY_IMAGE:dev" > "/$CI_REGISTRY_IMAGE.dev.tar"
   artifacts:
     paths:
-    - /var/lib/docker/image
-    expire_in: 1 day
+    - /$CI_REGISTRY_IMAGE.dev.tar
+    expire_in: 1 week
   only:
     - master
 
-push_dev:
-  stage: debug
+deploy_dev:
+  stage: deploy
   image: docker:latest
   services:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker images
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker load < "/$CI_REGISTRY_IMAGE.dev.tar"
+    - docker push "$CI_REGISTRY_IMAGE:dev"
   environment:
     name: development
     url: https://beerlog-dev.amiv.ethz.ch
