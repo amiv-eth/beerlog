@@ -1,11 +1,7 @@
 stages:
   - build
-  - build_push_review
-  - deploy_review
-  - build_push_dev
-  - deploy_dev
-  - build_push_prod
-  - deploy_prod
+  - build_push
+  - deploy
 
 build:
   stage: build
@@ -20,7 +16,7 @@ build:
     - master
 
 build_push_review:
-  stage: build_push_review
+  stage: build_push
   image: docker:latest
   services:
     - docker:dind
@@ -39,7 +35,7 @@ build_push_review:
     - master
 
 deploy_review:
-  stage: deploy_review
+  stage: deploy
   image: amiveth/service-update-helper
   script:
     - export CI_DEPLOY_SERVICE="$CI_DEPLOY_SERVICE_DEV"
@@ -51,7 +47,7 @@ deploy_review:
     - master
 
 build_push_dev:
-  stage: build_push_dev
+  stage: build_push
   image: docker:latest
   services:
     - docker:dind
@@ -67,7 +63,7 @@ build_push_dev:
     - master
 
 deploy_dev:
-  stage: deploy_dev
+  stage: deploy
   image: amiveth/service-update-helper
   script:
     - export CI_DEPLOY_SERVICE="$CI_DEPLOY_SERVICE_DEV"
@@ -76,7 +72,7 @@ deploy_dev:
     - master
 
 build_push_prod:
-  stage: build_push_prod
+  stage: build_push
   image: docker:latest
   services:
     - docker:dind
@@ -92,7 +88,7 @@ build_push_prod:
     - master
 
 deploy_prod:
-  stage: deploy_prod
+  stage: deploy
   image: amiveth/service-update-helper
   script:
     - export CI_DEPLOY_SERVICE="$CI_DEPLOY_SERVICE_PROD"
