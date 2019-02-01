@@ -97,6 +97,7 @@ def unauthorized_handler():
 
     # redirect to OAuth provider
     client_id = app.config.get('OAUTH_CLIENT_ID')
-    redirect_uri = request.url
+
+    redirect_uri = app.config.get('OAUTH_OWN_URL') + request.full_path
     path = '/oauth?response_type=token&client_id={}&redirect_uri={}'.format(client_id, redirect_uri)
     return redirect(app.config.get('AMIV_API_URL') + path)
