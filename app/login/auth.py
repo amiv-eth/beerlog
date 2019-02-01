@@ -1,5 +1,6 @@
 # app/login/auth.py
 
+import json
 from functools import wraps
 from flask import request, redirect, abort
 from flask_login import login_required, login_user, logout_user
@@ -44,16 +45,35 @@ def oauth_required(f):
     return wrapped
 
 
+def load_trusted_user_from_api(token):
+    """
+    Returns a User instance for a trusted api user
+
+    Returns None if the user session does not exist or the
+    user is not in a trusted group.
+    """
+    session_response = amivapi.get('/sessions/{}'.format(token), token=token)
+
+    if session_response.status_code != 200:
+        return None
+
+    session = session_response.json()
+    query = json.dumps({'user': session['user'], 'group': { "$in": app.config.get('AMIV_API_TRUSTED_GROUPS') } })
+    group_response = amivapi.get('/groupmemberships?where={}'.format(query), token=token)
+
+    if group_response.status_code != 200 or len(group_response.json()['_items']) == 0:
+        return None
+
+    return User(session=session)
+
 @login_manager.request_loader
 def load_user_from_request(request):
     if 'access_token' in request.args:
         access_token = request.args.get('access_token')
         try:
-            response = amivapi.get('/sessions/{}'.format(access_token), token=access_token)
-            if response.status_code != 200:
+            user = load_trusted_user_from_api(access_token)
+            if not user:
                 return None
-            session = response.json()
-            user = User(session=session)
             login_user(user)
             return user
         except:
@@ -72,9 +92,9 @@ def load_user_from_request(request):
 @login_manager.user_loader
 def load_user_from_session(session_token):
     try:
-        response = amivapi.get('/sessions/{}'.format(session_token), token=session_token)
-        session = response.json()
-        user = User(session=session)
+        user = load_trusted_user_from_api(session_token)
+        if not user:
+            return None
         return user
     except:
         return None
