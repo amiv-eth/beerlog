@@ -24,11 +24,9 @@ def home():
 
     query = db.session \
         .query(func.count(ProductReport._id).label('consumption'), ProductReport.user, ProductReport.organisation) \
-        .group_by(ProductReport.user, ProductReport.organisation) \
         .order_by(desc('consumption'))
 
     if request.args.get('date_from'):
-        app.logger.info('date_from: {}'.format(request.args.get('date_from')))
         try:
             date_from = datetime.strptime(request.args.get('date_from'), '%Y-%m-%d').date()
             filterForm.date_from.process_data(date_from)
@@ -36,7 +34,6 @@ def home():
         except:
             pass
     if request.args.get('date_to'):
-        app.logger.info('date_to: {}'.format(request.args.get('date_to')))
         try:
             date_to = datetime.strptime(request.args.get('date_to'), '%Y-%m-%d').date()
             filterForm.date_to.process_data(date_to)
@@ -44,25 +41,28 @@ def home():
         except:
             pass
     if request.args.get('organisation') and request.args.get('organisation') != 'None':
-        app.logger.info('organisation: {}'.format(request.args.get('organisation')))
         organisation = OrganisationEnum.from_str(request.args.get('organisation'))
         if organisation:
             filterForm.organisation.process_data(organisation)
             query = query.filter(ProductReport.organisation == organisation)
     if request.args.get('product') and request.args.get('product') != 'None':
-        app.logger.info('product: {}'.format(request.args.get('product')))
         product = ProductEnum.from_str(request.args.get('product'))
         if product:
             filterForm.product.process_data(product)
             query = query.filter(ProductReport.product == product)
 
     page = request.args.get('page', 1)
-    query_results = query.paginate(page, 30)
     first_position = (page - 1)*30
+    ranking_query_results = query \
+        .group_by(ProductReport.user, ProductReport.organisation) \
+        .paginate(page, 30)
+    consumption_query_results = query \
+        .group_by(ProductReport.organisation) \
+        .all()
 
-    # Resolve users
+    # Resolve users with API
     user_ids = []
-    for item in query_results.items:
+    for item in ranking_query_results.items:
         if len(item.user) > 6:
             user_ids.append(item.user)
 
@@ -76,5 +76,5 @@ def home():
 
     # load beerlog.home template
     return make_response(
-        render_template('beerlog/list.html', filterform=filterForm, query_results=query_results,
-          users=userDict, first_position=first_position, title='Overview'))
+        render_template('beerlog/list.html', filterform=filterForm, consumption=consumption_query_results,
+          ranking=ranking_query_results, users=userDict, first_position=first_position, title='Overview'))

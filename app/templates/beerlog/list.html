@@ -39,20 +39,39 @@
             {{ wtf.form_field(filterform.product) }}
             {{ wtf.form_field(filterform.submit) }}
         </form>
-        <!-- {{ wtf.quick_form(filterform) }} -->
     </div>
     <div>
         <table class="table table-hover">
             <thead>
                 <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Organisation</th>
-                <th scope="col">Consumption</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Organisation</th>
+                    <th scope="col">Consumption</th>
                 </tr>
             </thead>
             <tbody>
-                {% for report in query_results.items %}
+                {% for report in consumption %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ report.organisation }}</td>
+                        <td>{{ report.consumption }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Organisation</th>
+                    <th scope="col">Consumption</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in ranking.items %}
                     <tr>
                         <th scope="row">{{ first_position + loop.index }}</th>
                         {% if report.user in users %}
@@ -66,7 +85,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        {{render_pagination(query_results)}}
+        {{render_pagination(ranking)}}
     </div>
   </div>
 </div>
