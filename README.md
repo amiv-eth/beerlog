@@ -2,6 +2,8 @@
 
 A tool to track free beverage consumption offered to members written in Python 3. It allows to see the the statistics of consumed beer and coffee. This tool is connected with the user database of the [AMIV API](https://github.com/amiv-eth/amivapi) to check for permissions to access the statistics and to check for free beer/coffee.
 
+If you want to write your application for reporting product consumptions, see the API documentation at [README_API.md](README_API.md).
+
 ## Deployment
 
 is done via GitLab CI pipeline. The procedure has to be worked out.

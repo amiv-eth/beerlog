@@ -25,7 +25,7 @@ def check(rfid=None):
     if not available: abort(500)
 
     # check permission and filter response values accordingly
-    response = {}
+    response = {"_status": "OK"}
     for permission in current_user.apikey.permissions:
         key = permission.product.value
         if key in available:
