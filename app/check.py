@@ -17,6 +17,13 @@ def get_product_amounts(user, organisation):
     for product in ProductEnum:
         available[product.value] = max(0, max_available.get(product.value, 0) - consumed.get(product.value, 0))
 
+    print('-- max --', flush=True)
+    print(max_available)
+    print('-- available --', flush=True)
+    print(available)
+    print('-- consumed --', flush=True)
+    print(consumed)
+
     return (available, consumed, max_available)
 
 
@@ -37,12 +44,16 @@ def get_max_available_free_products(user, organisation):
         # Normal members have 1 free item per day
         if (user['membership'] != 'none'):
             print('User membership is not none', flush=True)
+            print('max_amount (1): {}'.format(max_amount), flush=True)
             max_amount = 1
+            print('max_amount (2): {}'.format(max_amount), flush=True)
 
         # Special groups have 5 free items per day
         groupmemberships = amivapi.get_selected_groupmemberships(user, app.config.get('AMIV_API_PRIVILEGED_GROUPS'))
         if len(groupmemberships) > 0:
+            print('max_amount (3): {}'.format(max_amount), flush=True)
             max_amount = 5
+            print('max_amount (4): {}'.format(max_amount), flush=True)
 
     available = {}
     for product in ProductEnum:
