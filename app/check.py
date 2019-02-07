@@ -47,6 +47,7 @@ def get_max_available_free_products(user, organisation):
     available = {}
     for product in ProductEnum:
         available[product.value] = max_amount
+    print(available)
     return available
 
 
