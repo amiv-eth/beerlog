@@ -30,8 +30,10 @@ def get_max_available_free_products(user, organisation):
     """Get the max number of available drinks for a user."""
     max_amount = 0
 
+    print('User is: {}'.format(str(user)), flush=True)
+
     if organisation == OrganisationEnum.AMIV:
-        print('User membership value is: {}'.format(user['membership']))
+        print('User membership value is: {}'.format(user['membership']), flush=True)
         # Normal members have 1 free item per day
         if (user['membership'] is not 'none'):
             max_amount = 1
