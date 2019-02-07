@@ -32,9 +32,9 @@ def get_max_available_free_products(user, organisation):
 
     if organisation == OrganisationEnum.AMIV:
         # Normal members have 1 free item per day
-        if (user['membership'] is not 'none'):
+        if (user['membership'] != 'none'):
             max_amount = 1
-        
+
         # Special groups have 5 free items per day
         groupmemberships = amivapi.get_selected_groupmemberships(user, app.config.get('AMIV_API_PRIVILEGED_GROUPS'))
         if len(groupmemberships) > 0:
@@ -60,5 +60,6 @@ def get_consumed_amount_by_product_today(user, organisation, product):
         .query(func.count(ProductReport._id).label('count')) \
         .filter(ProductReport.organisation == organisation) \
         .filter(ProductReport.product == product) \
+        .filter(ProductReport.user == user['_id']) \
         .filter(cast(ProductReport.timestamp,Date) == date.today()) \
         .scalar()
