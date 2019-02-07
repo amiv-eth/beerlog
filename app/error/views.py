@@ -18,3 +18,8 @@ def page_forbidden(e):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error/404.html', title='Page not found'), 404
+
+
+@app.errorhandler(500)
+def page_server_error(e):
+    return render_template('error/500.html', title='Internal Server Error'), 500
