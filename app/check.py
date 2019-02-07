@@ -31,6 +31,7 @@ def get_max_available_free_products(user, organisation):
     max_amount = 0
 
     if organisation == OrganisationEnum.AMIV:
+        print('User membership value is: {}'.format(user['membership']))
         # Normal members have 1 free item per day
         if (user['membership'] is not 'none'):
             max_amount = 1
