@@ -78,6 +78,7 @@ def get_consumed_amount_by_product_today(user, organisation, product):
         .filter(ProductReport.product == product) \
         .filter(cast(ProductReport.timestamp,Date) == date.today()) \
         .scalar()
-    if value:
-        return value
-    return 0
+    print('consumed_amount ({}): {}'.format(product.value, value))
+    if value == None:
+        return 0
+    return value
