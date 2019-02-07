@@ -72,9 +72,12 @@ def get_consumed_products_today(user, organisation):
 
 def get_consumed_amount_by_product_today(user, organisation, product):
     """Get number of consumed products of a given product today."""
-    return db.session \
+    value = db.session \
         .query(func.count(ProductReport._id).label('count')) \
         .filter(ProductReport.organisation == organisation) \
         .filter(ProductReport.product == product) \
         .filter(cast(ProductReport.timestamp,Date) == date.today()) \
         .scalar()
+    if value:
+        return value
+    return 0
