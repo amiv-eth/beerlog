@@ -35,9 +35,10 @@ def get_max_available_free_products(user, organisation):
     if organisation == OrganisationEnum.AMIV:
         print('User membership value is: {}'.format(user['membership']), flush=True)
         # Normal members have 1 free item per day
-        if (user['membership'] is not 'none'):
+        if (user['membership'] != 'none'):
+            print('User membership is not none', flush=True)
             max_amount = 1
-        
+
         # Special groups have 5 free items per day
         groupmemberships = amivapi.get_selected_groupmemberships(user, app.config.get('AMIV_API_PRIVILEGED_GROUPS'))
         if len(groupmemberships) > 0:
