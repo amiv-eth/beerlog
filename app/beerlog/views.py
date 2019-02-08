@@ -52,6 +52,10 @@ def home():
             query = query.filter(ProductReport.product == product)
 
     page = request.args.get('page', 1)
+    try:
+        page = int(page)
+    except ValueError:
+        page = 1
     first_position = (page - 1)*30
     ranking_query_results = query \
         .group_by(ProductReport.user, ProductReport.organisation) \
