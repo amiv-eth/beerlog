@@ -26,6 +26,13 @@ def home():
         .query(func.count(ProductReport._id).label('consumption'), ProductReport.user, ProductReport.organisation) \
         .order_by(desc('consumption'))
 
+    if request.args.get('user'):
+        try:
+            user = request.args.get('user')
+            filterForm.user.process_data(user)
+            query = query.filter(ProductReport.user == user)
+        except:
+            pass
     if request.args.get('date_from'):
         try:
             date_from = datetime.strptime(request.args.get('date_from'), '%Y-%m-%d').date()

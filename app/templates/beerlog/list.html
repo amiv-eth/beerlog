@@ -33,6 +33,7 @@
     <br/>
     <div>
         <form class="form form-horizontal" method="get" role="form">
+            {{ wtf.form_field(filterform.user) }}
             {{ wtf.form_field(filterform.date_from) }}
             {{ wtf.form_field(filterform.date_to) }}
             {{ wtf.form_field(filterform.organisation) }}
