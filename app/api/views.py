@@ -83,16 +83,6 @@ def report():
     report.organisation = organisation
     report.product = product
 
-    if (organisation == OrganisationEnum.AMIV):
-        if not apiuser:
-            issues['rfid'] = 'invalid value {}'.format(data.get('rfid'))
-            abort(422, issues)
-
-        # check if free drinks are available
-        available = get_available_free_products(apiuser, organisation)
-        if available.get(product.value, 0) == 0:
-            abort(403, 'Free amount of {} used up'.format(product.value))
-
     db.session.add(report)
     db.session.commit()
 
