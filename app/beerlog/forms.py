@@ -12,7 +12,7 @@ class FilterForm(FlaskForm):
     Form for filtering statistics list
     """
 
-    user = TextField('User ID/RFID')
+    user = TextField('User (n.ethz, RFID or AMIV User ID)')
     date_from = DateField('Start date')
     date_to = DateField('End date')
     organisation = SelectField('Organisation', choices=[(None, 'all'), *OrganisationEnum.choices()], coerce=OrganisationEnum.coerce)
