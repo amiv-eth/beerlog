@@ -14,5 +14,5 @@ DEBUG = False
 TESTING = False
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://<username>:<password>@<host>/<db-name>'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://<username>:<password>@<host>/<db-name>'
 SECRET_KEY = 'replace me (24 random bytes)'

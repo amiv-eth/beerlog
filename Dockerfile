@@ -8,14 +8,15 @@ EXPOSE 8080
 
 # Install bjoern and dependencies for install (we need to keep libev)
 RUN apk add --no-cache --virtual .deps \
-        musl-dev python-dev gcc git && \
+        musl-dev python-dev gcc git postgresql-dev && \
+    apk add --no-cache postgresql-libs && \
     apk add --no-cache libev-dev && \
     apk add --no-cache libffi-dev libressl-dev && \
     pip install bjoern
 
 # Copy files to /api directory, install requirements
 COPY ./ /beerlog
-RUN pip install -r /beerlog/requirements.txt
+RUN pip install -r /beerlog/requirements.txt --no-cache-dir
 
 # Cleanup dependencies
 RUN apk del .deps

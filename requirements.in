@@ -13,6 +13,7 @@ flask-wtf
 
 # database connector
 pymysql
+psycopg2
 
 # amivapi connector
 requests

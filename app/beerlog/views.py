@@ -1,7 +1,7 @@
 # app/beerlog/views.py
 
 from flask import render_template, make_response, request
-from sqlalchemy import Date, cast, func, desc, text
+from sqlalchemy import Date, cast, func, desc
 from datetime import datetime
 
 from ..login import auth
@@ -26,12 +26,17 @@ def home():
         func.count(ProductReport._id).label('consumption'),
         ProductReport.organisation,
         ProductReport.user,
+        func.dense_rank().over(
+            order_by=desc(func.count(ProductReport._id))
+        ).label('rank')
     )
 
     organisation_query = db.session.query(
         func.count(ProductReport._id).label('consumption'),
         ProductReport.organisation,
-        ProductReport.user,
+        func.dense_rank().over(
+            order_by=desc(func.count(ProductReport._id))
+        ).label('rank')
     )
 
     user = None
@@ -48,8 +53,6 @@ def home():
 
             if (apiUser != None):
                 user = apiUser['_id']
-
-            ranking_query = ranking_query.filter(ProductReport.user == user)
         except:
             pass
     if request.args.get('date_from'):
@@ -87,12 +90,17 @@ def home():
         page = 1
     first_position = (page - 1)*30
 
+    ranking_subquery = ranking_query \
+        .group_by(ProductReport.user, ProductReport.organisation) \
+        .subquery()
+    ranking_query = db.session.query(ranking_subquery)
+
     if (user != None):
-        ranking_query = ranking_query.filter(ProductReport.user == user)
+        ranking_query = ranking_query.filter(ranking_subquery.c.user == user)
 
     ranking_query_results = ranking_query \
-        .group_by(ProductReport.user, ProductReport.organisation) \
-        .order_by(desc('consumption')) \
+        .group_by(ranking_subquery.c.consumption, ranking_subquery.c.organisation, ranking_subquery.c.user, ranking_subquery.c.rank) \
+        .order_by(desc(ranking_subquery.c.consumption)) \
         .paginate(page, 30)
     consumption_query_results = organisation_query \
         .order_by(desc('consumption')) \

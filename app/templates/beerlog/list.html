@@ -53,7 +53,7 @@
             <tbody>
                 {% for report in consumption %}
                     <tr>
-                        <th scope="row">{{ loop.index }}</th>
+                        <th scope="row">{{ report.rank }}</th>
                         <td>{{ report.organisation }}</td>
                         <td>{{ report.consumption }}</td>
                     </tr>
@@ -74,7 +74,7 @@
             <tbody>
                 {% for report in ranking.items %}
                     <tr>
-                        <th scope="row">{{ first_position + loop.index }}</th>
+                        <th scope="row">{{ report.rank }}</th>
                         {% if report.user in users %}
                             <td>{{ users[report.user] }}</td>
                         {% else %}

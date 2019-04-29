@@ -15,10 +15,11 @@ To start the app locally for development, do the following:
 1. clone this repo
 2. create a python3 virtual environment: `virtualenv venv`
 3. and activate it: `source venv/bin/activate`
-4. install the requirements inside the virtualenv: `pip install -r requirements.txt`
-5. set the following environment variables: `export FLASK_APP="run.py"`, `export FLASK_CONFIG="development"`, and `export FLASK_DEBUG=1`
-6. create the local settings file with all the juicy secrets inside in `instance/config.py`. The two following options must be set: `SQLALCHEMY_DATABASE_URI` and `SECRET_KEY`. See next section.
-7. run the flask app: `flask run`
+4. install `psycopg2`
+5. install the requirements inside the virtualenv: `pip install -r requirements.txt`
+6. set the following environment variables: `export FLASK_APP="run.py"`, `export FLASK_CONFIG="development"`, and `export FLASK_DEBUG=1`
+7. create the local settings file with all the juicy secrets inside in `instance/config.py`. The two following options must be set: `SQLALCHEMY_DATABASE_URI` and `SECRET_KEY`. See next section.
+8. run the flask app: `flask run`
 
 ### Creating a local DB for development
 
@@ -27,19 +28,18 @@ You can spin up a local database server very easily with docker.
 Use the following command (make sure to replace `%USERNAME%`, `%PASSWORD%` and `%DB_NAME%` in advance!):
 
 ```bash
-sudo docker run -d --name beerlog-mariadb \
-     -e MYSQL_DATABASE="%DB_NAME%" \
-     -e MYSQL_USER="%USERNAME%" \
-     -e MYSQL_PASSWORD="%PASSWORD%" \
-     -e MYSQL_RANDOM_ROOT_PASSWORD="yes" \
-     -p 3306:3306 \
-     mariadb:10.4
+sudo docker run -d --name beerlog-postgres \
+     -e POSTGRES_DB=beerlog \
+     -e POSTGRES_USER=beerlog \
+     -e POSTGRES_PASSWORD=examplepassword \
+     -p 5432:5432 \
+     postgres:9.6-alpine
 ```
 
 In the next step, edit your `config.py`:
 
 * Set `SECRET_KEY` to some random string.
-* Set `SQLALCHEMY_DATABASE_URI` to `mysql://%USER%:%PASSWORD%@localhost/%DB_NAME%`.
+* Set `SQLALCHEMY_DATABASE_URI` to `postgresql+psycopg2://%USER%:%PASSWORD%@localhost/%DB_NAME%`.
 
 Last but not least, upgrade the database to the correct state with `flask db upgrade`.
 
