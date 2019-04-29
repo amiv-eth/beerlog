@@ -26,13 +26,15 @@ def home():
         func.count(ProductReport._id).label('consumption'),
         ProductReport.organisation,
         ProductReport.user,
-    ).order_by(desc('consumption'))
+    )
 
     organisation_query = db.session.query(
         func.count(ProductReport._id).label('consumption'),
         ProductReport.organisation,
         ProductReport.user,
-    ).order_by(desc('consumption'))
+    )
+
+    user = None
 
     if request.args.get('user'):
         try:
@@ -85,15 +87,15 @@ def home():
         page = 1
     first_position = (page - 1)*30
 
-    ranking_query = db.session.query(ranking_query.subquery())
-
     if (user != None):
         ranking_query = ranking_query.filter(ProductReport.user == user)
 
     ranking_query_results = ranking_query \
         .group_by(ProductReport.user, ProductReport.organisation) \
+        .order_by(desc('consumption')) \
         .paginate(page, 30)
     consumption_query_results = organisation_query \
+        .order_by(desc('consumption')) \
         .group_by(ProductReport.organisation) \
         .all()
 
