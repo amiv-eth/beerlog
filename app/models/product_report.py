@@ -16,3 +16,11 @@ class ProductReport(db.Model):
     organisation = db.Column(db.Enum(OrganisationEnum), nullable=False)
     product = db.Column(db.Enum(ProductEnum), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
+
+    # Indexes
+
+    __table_args__ = (
+        db.Index('product_report_user_org_idx', user, organisation),
+        db.Index('product_report_org_idx', organisation),
+        db.Index('product_report_timestamp_idx', timestamp),
+    )
